@@ -14,14 +14,12 @@ var imagePuzzle = {
     tick: function () {
         var now = new Date().getTime();
         var elapsedTime = parseInt((now - imagePuzzle.startTime) / 1000, 10);
-        helper.doc('timerPanel').textContent = elapsedTime;
         timerFunction = setTimeout(imagePuzzle.tick, 1000);
     },
     setImage: function (images, gridSize = 4) {
         var percentage = 100 / (gridSize - 1);
         var image = images[Math.floor(Math.random() * images.length)];
         helper.doc('imgTitle').innerHTML = image.title;
-        helper.doc('actualImage').setAttribute('src', image.src);
         helper.doc('sortable').innerHTML = '';
         for (var i = 0; i < gridSize * gridSize; i++) {
             var xpos = (percentage * (i % gridSize)) + '%';
@@ -33,8 +31,8 @@ var imagePuzzle = {
             li.style.backgroundImage = 'url(' + image.src + ')';
             li.style.backgroundSize = (gridSize * 100) + '%';
             li.style.backgroundPosition = xpos + ' ' + ypos;
-            li.style.width = 400 / gridSize + 'px';
-            li.style.height = 400 / gridSize + 'px';
+            li.style.width = 100 / gridSize + '%';
+            li.style.height = 100 / gridSize + '%';
 
             li.setAttribute('draggable', 'true');
             li.ondragstart = (event) => event.dataTransfer.setData('data', event.target.id);
@@ -51,13 +49,10 @@ var imagePuzzle = {
 
                     let vals = Array.from(helper.doc('sortable').children).map(x => x.id);
                     var now = new Date().getTime();
-                    document.querySelectorAll('.stepCount').textContent = ++imagePuzzle.stepCount;
-                    document.querySelector('.timeCount').textContent = (parseInt((now - imagePuzzle.startTime) / 1000, 10));
 
                     if (isSorted(vals)) {
-                        // helper.doc('actualImageBox').style.display = 'none';
-                        // helper.doc('gameOver').style.display = 'block';
-                        helper.doc('actualImageBox').innerHTML = helper.doc('gameOver').innerHTML;
+						document.querySelector('.winMsg').innerHTML = image.msg;
+                        document.querySelector('.winDiv').style.display = "block";
                     }
                 }
             };
